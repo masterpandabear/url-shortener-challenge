@@ -6,6 +6,10 @@
     "eslint:recommended",
     "plugin:node/recommended"
   ],
+  "env": {
+    "node": true,
+    "jest": true
+  },
   "rules": {
     "node/exports-style": [
       "error",
