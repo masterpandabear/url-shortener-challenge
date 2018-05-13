@@ -1,4 +1,4 @@
-const mongo = require('../../server/mongodb');
+const mongo = require('../get-mongo-database');
 const mongoose = require('mongoose');
 
 module.exports = mongo.model('Url', new mongoose.Schema({

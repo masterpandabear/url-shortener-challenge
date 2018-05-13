@@ -1,8 +1,8 @@
 const uuidv4 = require('uuid/v4');
-const { domain } = require('../../environment');
+const { domain } = require('../../configs');
 const SERVER = `${domain.protocol}://${domain.host}`;
 
-const UrlModel = require('./schema');
+const urlStore = require('../../store/urls');
 const parseUrl = require('url').parse;
 const validUrl = require('valid-url');
 
@@ -13,7 +13,7 @@ const validUrl = require('valid-url');
  * @returns {object}
  */
 async function getUrl(hash) {
-  let source = await UrlModel.findOne({ active: true, hash });
+  let source = await urlStore.getByHash(hash);
   return source;
 }
 
@@ -61,7 +61,7 @@ async function shorten(url, hash) {
   const removeToken = generateRemoveToken();
 
   // Create a new model instance
-  const shortUrl = new UrlModel({
+  const shortUrl = {
     url,
     protocol,
     domain,
@@ -69,10 +69,9 @@ async function shorten(url, hash) {
     hash,
     isCustom: false,
     removeToken,
-    active: true
-  });
+  };
 
-  const saved = await shortUrl.save();
+  const saved = await urlStore.save(shortUrl);
   // TODO: Handle save errors
 
   return {
