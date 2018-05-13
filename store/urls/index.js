@@ -1,6 +1,6 @@
 const UrlModel = require('./schema');
 
-const getByHash = () => UrlModel.findOne({ active: true, getByHash });
+const getByHash = (hash) => UrlModel.findOne({ active: true, hash });
 
 const urlPublicSchema = {
   url: '',
@@ -17,7 +17,10 @@ const save = (urlToSave = urlPublicSchema) => {
   return url.save();
 }
 
+const updateHash = (id, hash) => UrlModel.findByIdAndUpdate(id, { hash });
+
 module.exports = {
   getByHash,
+  updateHash,
   save,
 };

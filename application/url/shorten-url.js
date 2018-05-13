@@ -5,7 +5,7 @@ const { domain } = require('../../configs');
 const SERVER = `${domain.protocol}://${domain.host}`;
 
 const defaultUrlStore = require('../../store/urls');
-
+const defaultCypher = require('../cypher')();
 
 /**
  * Validate URI
@@ -15,7 +15,8 @@ const defaultUrlStore = require('../../store/urls');
 const isValid = (url) => validUrl.isUri(url);
 
 const defaultDependencies = {
-  urlStore: defaultUrlStore
+  urlStore: defaultUrlStore,
+  cypher: defaultCypher,
 };
 
 /**
@@ -27,7 +28,7 @@ function generateRemoveToken() {
 }
 
 module.exports = (dependencies = defaultDependencies) => {
-  const { urlStore } = dependencies;
+  const { urlStore, cypher } = dependencies;
 
   const getURLComponents = url => {
     // Get URL components for metrics sake
@@ -38,14 +39,13 @@ module.exports = (dependencies = defaultDependencies) => {
     return ({ protocol, domain, path });
   };
 
-  const buildShortUrl = (url, removeToken, hash) => {
+  const buildShortUrl = (url, removeToken) => {
     const { protocol, domain, path } = getURLComponents(url);
     return ({
       url,
       protocol,
       domain,
       path,
-      hash,
       isCustom: false,
       removeToken,
     });
@@ -59,16 +59,18 @@ module.exports = (dependencies = defaultDependencies) => {
  * @param {string} hash
  * @returns {object}
  */
-  async function shorten(url, hash) {
+ const shorten = async(url) => {
     if (!isValid(url)) {
       throw new Error('Invalid URL');
     }
-
     // Generate a token that will alow an URL to be removed (logical)
     const removeToken = generateRemoveToken();
-    const shortUrl = buildShortUrl(url, removeToken, hash);
+    const shortUrl = buildShortUrl(url, removeToken);
 
-    await urlStore.save(shortUrl);
+    const saved = await urlStore.save(shortUrl);
+
+    const hash = cypher.encode(saved.counter);
+    await urlStore.updateHash(saved._id, hash);
     // TODO: Handle save errors
     return {
       url,

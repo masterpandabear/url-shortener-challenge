@@ -1,7 +1,9 @@
 const mongo = require('../get-mongo-database');
 const mongoose = require('mongoose');
+const { autoIncrement } = require('mongoose-plugin-autoinc')
 
-module.exports = mongo.model('Url', new mongoose.Schema({
+
+const urlSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true
@@ -11,7 +13,6 @@ module.exports = mongo.model('Url', new mongoose.Schema({
 
   hash: {
     type: String,
-    required: true,
     unique: true
   },
   isCustom: {
@@ -22,6 +23,15 @@ module.exports = mongo.model('Url', new mongoose.Schema({
   removeToken: {
     type: String,
     required: true
+  },
+
+  key: {
+    type: Number,
+    default: 0,
+  },
+
+  counter: {
+    type: Number,
   },
 
   protocol: String,
@@ -39,4 +49,11 @@ module.exports = mongo.model('Url', new mongoose.Schema({
     required: true,
     default: true
   }
-}));
+})
+
+urlSchema.plugin(autoIncrement, { model: 'Url', field: 'counter'});
+
+const urlModel = mongo.model('Url', urlSchema);
+
+
+module.exports = urlModel;
