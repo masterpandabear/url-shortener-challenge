@@ -25,11 +25,6 @@ const urlSchema = new mongoose.Schema({
     required: true
   },
 
-  key: {
-    type: Number,
-    default: 0,
-  },
-
   counter: {
     type: Number,
   },
