@@ -77,7 +77,7 @@ module.exports = (dependencies = defaultDependencies) => {
       url,
       shorten: `${SERVER}/${hash}`,
       hash,
-      removeUrl: `${SERVER}/${hash}/remove/${removeToken}`
+      removeUrl: `${SERVER}/${hash}/tokens/${removeToken}`
     };
   }
   return shorten;

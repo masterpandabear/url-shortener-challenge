@@ -19,8 +19,17 @@ const save = (urlToSave = urlPublicSchema) => {
 
 const updateHash = (id, hash) => UrlModel.findByIdAndUpdate(id, { hash });
 
+const removeUrl = (hash, removeToken) => {
+  const newValues = {
+    active: 0,
+    removedAt: new Date(),
+  }
+  return UrlModel.update({ hash, removeToken}, { $set: newValues }).then(({ nModified }) => nModified > 0 );
+}
+
 module.exports = {
   getByHash,
   updateHash,
+  removeUrl,
   save,
 };

@@ -5,14 +5,18 @@ const visit = require('../visit');
 const throwError = require('../../helpers/throw-error');
 const { validateUrlBody } = require('./validations');
 
+const validateSource = source => {
+  if (isNil(source)) return throwError('short url not found', 404, 'URLNotFound', 404);
+  return source;
+};
+
 router.get('/:hash', async (req, res, next) => {
   try {
     const publicFields = ['url', 'isCustom', 'hash'];
     const agent = req.get('user-agent');
     const accepts = req.get('Accept');
 
-    const source = await url.getUrl(req.params.hash);
-    if (isNil(source)) return throwError('short url not found', 404, 'URLNotFound', 404);
+    const source = await url.getUrl(req.params.hash).then(validateSource);
 
     await visit.registerVisit({ agent }, source._id);
     const totalVisits = await visit.getVisitCounts(source._id);
@@ -49,11 +53,14 @@ router.post('/', async (req, res, next) => {
 });
 
 
-router.delete('/:hash/:removeToken', async (req, res, next) => {
-  // TODO: Remove shortened URL if the remove token and the hash match
-  let notImplemented = new Error('Not Implemented');
-  notImplemented.status = 501;
-  next(notImplemented);
+router.delete('/:hash/tokens/:removeToken', async (req, res, next) => {
+  try {
+    const { hash, removeToken } = req.params;
+    await url.removeUrl(hash, removeToken);
+    res.json({ hash });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

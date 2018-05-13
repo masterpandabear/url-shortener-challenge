@@ -9,7 +9,8 @@ const save = (visitToSave = visitPublicSchema, urlId) => {
   return visit.save();
 };
 
-const getVisitCounts = urlId => VisitModel.count({ url: urlId })
+const getVisitCounts = urlId => VisitModel.count({ url: urlId });
+
 
 module.exports = {
   save,
