@@ -3,6 +3,7 @@ const throwValidationError = require('../../helpers/throw-validation-error');
 
 const urlBodySchema = joi.object().keys({
   url: joi.string().required(),
+  customHash: joi.string().min(1),
 })
 
 const validateUrlBody = urlBody => {

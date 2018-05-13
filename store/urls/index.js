@@ -23,8 +23,10 @@ const removeUrl = (hash, removeToken) => {
   const newValues = {
     active: 0,
     removedAt: new Date(),
+    removedHash: hash,
   }
-  return UrlModel.update({ hash, removeToken}, { $set: newValues }).then(({ nModified }) => nModified > 0 );
+  return UrlModel.update({ hash, removeToken}, { $set: newValues, $unset: { hash: 1 }})
+    .then(({ nModified }) => nModified > 0 );
 }
 
 module.exports = {

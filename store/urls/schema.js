@@ -12,7 +12,8 @@ const urlSchema = new mongoose.Schema({
 
   hash: {
     type: String,
-    unique: true
+    unique: true,
+    sparse: true,
   },
   isCustom: {
     type: Boolean,
@@ -22,6 +23,10 @@ const urlSchema = new mongoose.Schema({
   removeToken: {
     type: String,
     required: true
+  },
+
+  removedHash: {
+    type: String,
   },
 
   counter: {

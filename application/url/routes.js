@@ -45,7 +45,7 @@ router.get('/:hash', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const validatedBody = validateUrlBody(req.body);
-    let shortUrl = await url.shorten(validatedBody.url);
+    let shortUrl = await url.shorten(validatedBody);
     res.json(shortUrl);
   } catch (error) {
     next(error);

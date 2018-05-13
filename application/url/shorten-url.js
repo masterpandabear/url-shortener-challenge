@@ -60,18 +60,27 @@ module.exports = (dependencies = defaultDependencies) => {
  * @param {string} hash
  * @returns {object}
  */
- const shorten = async(url) => {
+ const shorten = async({url, customHash }) => {
     if (!isValid(url)) {
-      throwError('url provided is not valid', 400, 'ValidationEror', 400);
+      throwError('url provided is not valid', 400, 'ValidationError', 400);
     }
     // Generate a token that will alow an URL to be removed (logical)
     const removeToken = generateRemoveToken();
     const shortUrl = buildShortUrl(url, removeToken);
+    let hash;
+    if (customHash !== '') {
+      const storedUrl = await urlStore.getByHash(customHash);
+      if (storedUrl) throwError('Custom hash is already in use', 400, 'ValidationError', 400);
+      shortUrl.isCustom = true;
+      shortUrl.hash = customHash;
+      hash = customHash;
+      await urlStore.save(shortUrl);
+    } else {
+      const saved = await urlStore.save(shortUrl);
+      hash = cypher.encode(saved.counter);
+      await urlStore.updateHash(saved._id, hash);
+    }
 
-    const saved = await urlStore.save(shortUrl);
-
-    const hash = cypher.encode(saved.counter);
-    await urlStore.updateHash(saved._id, hash);
     return {
       url,
       shorten: `${SERVER}/${hash}`,
