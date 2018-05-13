@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise; // Use JavaScript promises
-const { Mongo } = require('../environment');
+mongoose.Promise = global.Promise;
+const { mongo } = require('../configs');
 
-const uri = `mongodb://${Mongo.HOST}:${Mongo.PORT}/${Mongo.NAME}`;
+const uri = `mongodb://${mongo.HOST}:${mongo.PORT}/${mongo.NAME}`;
 
 /**
  , {
@@ -11,6 +11,6 @@ const uri = `mongodb://${Mongo.HOST}:${Mongo.PORT}/${Mongo.NAME}`;
   pass: Mongo.PASS
 }
  */
-const db = mongoose.createConnection(uri);
+const database = mongoose.createConnection(uri);
 
-module.exports = db;
+module.exports = database;
