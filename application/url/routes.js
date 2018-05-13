@@ -1,17 +1,17 @@
 const router = require('express').Router();
-const url = require('./index');
+const { pick } = require('ramda');
+const url = require('./');
+const visit = require('../visit');
 
 router.get('/:hash', async (req, res, next) => {
-
+  const publicFields = ['url', 'isCustom', 'hash'];
   const source = await url.getUrl(req.params.hash);
-
   // TODO: Respond accordingly when the hash wasn't found (404 maybe?)
 
-  // TODO: Hide fields that shouldn't be public
-
-  // TODO: Register visit
-
-
+  const agent = req.get('user-agent');
+  await visit.registerVisit({ agent }, source._id);
+  const totalVisits = await visit.getVisitCounts(source._id);
+  const publicUrl = Object.assign({}, pick(publicFields, source), { totalVisits });
   // Behave based on the requested format using the 'Accept' header.
   // If header is not provided or is */* redirect instead.
   const accepts = req.get('Accept');
@@ -21,7 +21,7 @@ router.get('/:hash', async (req, res, next) => {
       res.end(source.url);
       break;
     case 'application/json':
-      res.json(source);
+      res.json(publicUrl);
       break;
     default:
       res.redirect(source.url);

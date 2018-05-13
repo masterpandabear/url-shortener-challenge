@@ -1,6 +1,6 @@
 const UrlModel = require('./schema');
 
-const getByHash = (hash) => UrlModel.findOne({ active: true, hash });
+const getByHash = (hash) => UrlModel.findOne({ active: true, hash }).populate('visits');
 
 const urlPublicSchema = {
   url: '',

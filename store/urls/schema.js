@@ -2,7 +2,6 @@ const mongo = require('../get-mongo-database');
 const mongoose = require('mongoose');
 const { autoIncrement } = require('mongoose-plugin-autoinc')
 
-
 const urlSchema = new mongoose.Schema({
   url: {
     type: String,

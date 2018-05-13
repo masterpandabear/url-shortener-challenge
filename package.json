@@ -15,6 +15,7 @@
     "joi": "^13.3.0",
     "mongoose": "^4.12.3",
     "mongoose-plugin-autoinc": "^1.1.9",
+    "ramda": "^0.25.0",
     "uuid": "^3.1.0",
     "valid-url": "^1.0.9"
   },
