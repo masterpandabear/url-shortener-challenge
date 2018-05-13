@@ -1,6 +1,6 @@
 'use strict';
-
 require('dotenv').config();
+const { logger } = require('./helpers/logger');
 
 const app = require('./app');
 const server = require('http').Server(app);
@@ -73,5 +73,5 @@ function onListening() {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }

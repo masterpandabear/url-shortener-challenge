@@ -72,7 +72,6 @@ module.exports = (dependencies = defaultDependencies) => {
 
     const hash = cypher.encode(saved.counter);
     await urlStore.updateHash(saved._id, hash);
-    // TODO: Handle save errors
     return {
       url,
       shorten: `${SERVER}/${hash}`,

@@ -12,8 +12,6 @@ module.exports = (dependencies = defaultDependencies) => {
  * @param {string} hash
  * @returns {object}
  */
-  async function getUrl(hash) {
-    return urlStore.getByHash(hash);
-  }
+  const getUrl = hash => urlStore.getByHash(hash);
   return getUrl;
 };
