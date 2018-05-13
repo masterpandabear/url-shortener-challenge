@@ -10,25 +10,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', url);
 
+const handleError = (error, req, res, next) => {
+  const statusCode = error.statusCode || 500;
+  res.locals.message = error.message;
+  res.locals.error = req.app.get('env') === 'development' ? error : {};
+  const messageToReturn = error.name === 'MongoError' ? 'Internal Error, try again later' : error.message;
+  res.status(statusCode);
+  res.json({
+    message: messageToReturn,
+    code: error.code || error.errorCode,
+  })
+}
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  const error = new Error('Not Found');
+  error.statusCode = 404;
+  next(error);
 });
 
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    code: err.status
-  });
-});
+app.use(handleError);
 
 module.exports = app;

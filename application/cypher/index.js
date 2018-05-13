@@ -12,19 +12,19 @@ module.exports = (alphabet = DEFAULT_ALPHABET) => {
 
   /**
    * Encodes a number into a string based on the Bijective numeration
-   * @param {number} number
+   * @param {number} numberToEncode
    * @returns {string}
  */
-  const encode = (number = 1) => {
-    if (typeof number !== 'number') throw new Error('number is not a number');
-    return processEncoding(number);
+  const encode = (numberToEncode = 1) => {
+    if (typeof numberToEncode !== 'number') throw new Error('number to encode is not a number');
+    return processEncoding(numberToEncode);
   }
 
     /**
    * Decodes a string back into the original number based on the Bijective numeration
    * due to javascripts precision large numbers may not be able to be decoded accurately
-   * @param {number} number
-   * @returns {string}
+   * @param {string} encodedChain
+   * @returns {number}
  */
   const decode = (encodedChain = '') => {
     if (typeof encodedChain !== 'string') throw new Error('encodedChain is not a string');

@@ -3,6 +3,7 @@ const parseUrl = require('url').parse;
 const validUrl = require('valid-url');
 const { domain } = require('../../configs');
 const SERVER = `${domain.protocol}://${domain.host}`;
+const throwError = require('../../helpers/throw-error');
 
 const defaultUrlStore = require('../../store/urls');
 const defaultCypher = require('../cypher')();
@@ -61,7 +62,7 @@ module.exports = (dependencies = defaultDependencies) => {
  */
  const shorten = async(url) => {
     if (!isValid(url)) {
-      throw new Error('Invalid URL');
+      throwError('url provided is not valid', 400, 'ValidationEror', 400);
     }
     // Generate a token that will alow an URL to be removed (logical)
     const removeToken = generateRemoveToken();
