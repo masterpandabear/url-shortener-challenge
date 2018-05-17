@@ -8,7 +8,7 @@ This challenge consists in completing the missing features of a service to short
 
 ### URL shorten algorithm
 
-The chosen algorithm was creating a cypher (using a bijective conversion function). This was the recommended aproach in several articles i read. The algorithm uses an autoincrement integer field as the number to encode into the url hash, this was used instead of generating a random number or using the timestamp to avoid collisions and to reduce the length of the hash.
+The chosen algorithm is based on a cypher (using a bijective conversion function). This was the recommended aproach in several articles I read. The algorithm uses an autoincrement integer field as the number to encode into the url hash, this was used instead of generating a random number or using the timestamp to avoid collisions and to reduce the length of the hash.
 
 ### Additional Features
 
@@ -19,9 +19,9 @@ The chosen algorithm was creating a cypher (using a bijective conversion functio
 
 ### Structure change
 
-As part of the solution i also changed the structure of the service to attempt for a cleaner structure and code following the principles of Uncle Bob's (Robert C. Martin) clean architecture that is based on layers and tries to decouple  modules from the main application, in this case  the database and the shortener algorithm. The folder structure changed as follows:
+As part of the solution I also changed the structure of the service to attempt for a cleaner structure and code following the principles of Uncle Bob's (Robert C. Martin) clean architecture that is based on layers and tries to decouple  modules from the main application, in this case  the database and the shortener algorithm. The folder structure changed as follows:
 
-* application: this contains the main application modules separated by features
+* application: this contains the main application modules, each subfolder is separated by features.
   - url
   - cypher
   - visit
@@ -30,7 +30,7 @@ As part of the solution i also changed the structure of the service to attempt f
 * helpers: contains several utilitiy modules
 * store: contains the modules that handle data persistance, in this case mongodb
  
-## References
+## References (that i remmeber)
 [Geeks for geeks](https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/)
 
 [Code horror](https://blog.codinghorror.com/url-shortening-hashes-in-practice/)
