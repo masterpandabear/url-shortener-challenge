@@ -47,10 +47,34 @@ module.exports = (dependencies = defaultDependencies) => {
       protocol,
       domain,
       path,
+      hash: '-',
       isCustom: false,
       removeToken,
     });
   }
+
+  const validateCustomHash = async (customHash) => {
+    const duplicateHashUrl = await urlStore.getByHash(customHash);
+    if (duplicateHashUrl) throwError('Custom hash is already in use', 400, 'ValidationError', 400);
+    return customHash;
+  }
+
+  const registerCustomUrl = async (hash, shortUrl) => {
+    await validateCustomHash(hash);
+    shortUrl.isCustom = true;
+    shortUrl.hash = hash;
+    await urlStore.save(shortUrl);
+    return hash;
+  }
+
+  const registerUrl = async (shortUrl) => {
+    const saved = await urlStore.save(shortUrl);
+    const hash = cypher.encode(saved.counter);
+    await urlStore.updateHash(saved._id, hash);
+    return hash;
+  }
+
+  const shouldRegisterCustomHash = (customHash = '') => customHash !== '';
 
   /**
  * Create an instance of a shortened URL in the DB.
@@ -64,21 +88,14 @@ module.exports = (dependencies = defaultDependencies) => {
     if (!isValid(url)) {
       throwError('url provided is not valid', 400, 'ValidationError', 400);
     }
-    // Generate a token that will alow an URL to be removed (logical)
+
     const removeToken = generateRemoveToken();
     const shortUrl = buildShortUrl(url, removeToken);
     let hash;
-    if (customHash !== '') {
-      const storedUrl = await urlStore.getByHash(customHash);
-      if (storedUrl) throwError('Custom hash is already in use', 400, 'ValidationError', 400);
-      shortUrl.isCustom = true;
-      shortUrl.hash = customHash;
-      hash = customHash;
-      await urlStore.save(shortUrl);
+    if (shouldRegisterCustomHash(customHash)) {
+      hash = await registerCustomUrl(customHash, shortUrl);
     } else {
-      const saved = await urlStore.save(shortUrl);
-      hash = cypher.encode(saved.counter);
-      await urlStore.updateHash(saved._id, hash);
+      hash = await registerUrl(shortUrl)
     }
 
     return {
