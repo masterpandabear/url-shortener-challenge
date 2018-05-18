@@ -35,5 +35,5 @@ As part of the solution I also changed the structure of the service to attempt f
 
 [Code horror](https://blog.codinghorror.com/url-shortening-hashes-in-practice/)
 
-[PHP URL Shortener Algorithm How-to] (https://medium.com/@frjalex/php-url-shortener-algorithm-how-to-a6219a69e97f)
+[PHP URL Shortener Algorithm How-to](https://medium.com/@frjalex/php-url-shortener-algorithm-how-to-a6219a69e97f)
 
