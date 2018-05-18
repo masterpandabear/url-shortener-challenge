@@ -30,7 +30,10 @@ As part of the solution I also changed the structure of the service to attempt f
 * helpers: contains several utilitiy modules
 * store: contains the modules that handle data persistance, in this case mongodb
  
-## References (that i remmeber)
+## References (that i remember)
 [Geeks for geeks](https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/)
 
 [Code horror](https://blog.codinghorror.com/url-shortening-hashes-in-practice/)
+
+[PHP URL Shortener Algorithm How-to] (https://medium.com/@frjalex/php-url-shortener-algorithm-how-to-a6219a69e97f)
+
