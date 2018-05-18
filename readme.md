@@ -3,6 +3,7 @@
 ## Challenge Description
 
 This challenge consists in completing the missing features of a service to shorten URLS. The main feature to develop is to replace the UUID placeholrder for an algorithm to shorten the urls.
+[API DOCUMENTATION](https://documenter.getpostman.com/view/763203/url-shortener/RW86Lq3T)
 
 ## Solution
 
@@ -29,6 +30,7 @@ As part of the solution I also changed the structure of the service to attempt f
 * configs: contains de config files, it takes most of the config from the environment variables.
 * helpers: contains several utilitiy modules
 * store: contains the modules that handle data persistance, in this case mongodb
+
  
 ## References (that i remember)
 [Geeks for geeks](https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/)
